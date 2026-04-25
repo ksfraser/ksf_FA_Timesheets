@@ -1,0 +1,9 @@
+{
+    "name": "ksfraser/ksf_fa_timesheets",
+    "description": "FA module - Timesheets",
+    "type": "fa-module",
+    "require": {
+        "ksfraser/ksf_Timesheets": "*",
+        "ksfraser/composerdendencymanager": "*"
+    }
+}

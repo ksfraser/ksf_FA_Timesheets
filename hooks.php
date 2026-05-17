@@ -96,7 +96,7 @@ class hooks_ksf_FA_Timesheets extends hooks {
     /**
      * Install composer dependencies if needed
      */
-    private function ensure_composer_dependencies(): void {
+    private function ensure_composer_dependencies() {
         $module_dir = dirname(__FILE__);
         $autoload_path = $module_dir . '/vendor/autoload.php';
         
@@ -110,7 +110,7 @@ class hooks_ksf_FA_Timesheets extends hooks {
         }
         
         chdir($module_dir);
-        $output = [];
+        $output = array();
         $return_code = 0;
         exec('composer install --no-interaction --prefer-dist 2>&1', $output, $return_code);
         if ($return_code !== 0) {

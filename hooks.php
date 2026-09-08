@@ -42,8 +42,15 @@ class hooks_ksf_FA_Timesheets extends hooks {
      * @return application|null New tab application instance or nothing
      */
     function install_tabs($app) {
-        // Override in modules that add apps
-        // return new ksf_FA_Timesheets_app();
+        set_ext_domain('modules/ksf_FA_Timesheets');
+        // Timesheets module: create basic tab if app framework available
+        if (class_exists('application')) {
+            $tab = new application('timesheets_app', 'Timesheets');
+            $tab->set_title('Timesheets');
+            $tab->set_icon('calendar');
+            return $tab;
+        }
+        return null;
     }
 
     /**

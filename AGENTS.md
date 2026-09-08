@@ -11,6 +11,18 @@ refactoring anything that spans modules.
 > hook protocols, security-area registry, FA DB gotchas). This file holds only
 > decisions.
 
+## ksf_payment_destinations — development tree status
+
+**`~/Documents/FA_PaymentDestinations/` is an ABORTED branch.** Do not develop
+there. That directory is a bind mount (via `~/Documents/ksf_Infrastructure/`)
+that was used for documentation only — it has no `src/`, no `Tests/`, no
+PSR-4 refactoring, and no `@BABOK` traceability annotations. All development
+happened in `~/Documents/ksf_payment_destinations/` which is the primary
+working dev tree.
+
+If you find yourself editing files in `FA_PaymentDestinations/` — STOP and
+switch to `ksf_payment_destinations/` immediately.
+
 ## Cross-module facts (at a glance)
 
 - **PHP 7.3 is the cross-module compatibility floor** (current prod runs 7.3 on
@@ -196,3 +208,17 @@ Fix implications: the create-child path must also write `product_hierarchy` (cal
   another module's activation state.
 - Cross-module contracts/classes live in a Packagist package (e.g. ksf_FA_Common /
   future ksf_common_db), NOT in a module dir.
+
+## Testing Environment
+
+**Running FA Instance:** http://192.168.1.102:8080
+- User: `opencode`
+- Password: `opencode`
+
+**Module Deployment:**
+Modules are deployed to `~/Documents/ksf_Infrastructure/fa_modules/` and synced to the running instance.
+# ALWAYS COMMIT (added: always commit per AGENTS.local.md line 36)\n\nPer user instruction from ksf_FA_Calendar/AGENTS.local.md line 36:\n"4. **ALWAYS COMMIT** and **PUSH** branch to GitHub (do not wait for user permission)"
+# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
+# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
+# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
+# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"

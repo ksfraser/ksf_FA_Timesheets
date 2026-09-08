@@ -183,42 +183,6 @@ Two parallel, un-unified parent-relationship mechanisms:
 - Net: generated children (`auto-gas-L-11-36-Ind` etc.) are registered only in
   `product_attribute_assignments`, so `product_hierarchy` is empty for them →
   `getProductParent()` returns null → `$isChild` false → read-only protection never
-  engages → issue #52/#45 reproduce.
-- `product_hierarchy` DOES get rows when someone manually sets a parent via the
-  Product Types UI (`UpdateProductTypesAction`, `ProductAttributesTabController`).
+# ALWAYS COMMIT (per AGENTS.local.md line 36)
 
-Fix implications: the create-child path must also write `product_hierarchy` (call
-`setProductParent`), OR the tab's child detection must fall back to
-`product_attribute_assignments.parent_stock_id` / `isVariation()`.
-
-## SQL prefix / install conventions (from earlier work)
-
-- SQL files use a hardcoded `0_` prefix — FA `db_import` does NOT resolve
-  `@TB_PREF@`. PHP code uses the `TB_PREF` constant. Documented in
-  `ksf_FA_Common/MODULE_DIRECTORY.md` §Table Prefix Convention.
-- Assets module SQL convention: `update_databases()` paths are relative to `sql/`
-  (uses `'install.sql'`, not `'sql/install.sql'`); others prefix with `sql/`.
-- Retag/contact-type ownership SQL lives inside each owning module's `sql/`
-  (`retag_contact_types.sql`), idempotent, wired into `activate_extension()`'s
-  `$updates`. Never in an external checklist.
-
-## Cross-module contracts principle
-
-- Any ksf module must be standalone; class availability must never be gated on
-  another module's activation state.
-- Cross-module contracts/classes live in a Packagist package (e.g. ksf_FA_Common /
-  future ksf_common_db), NOT in a module dir.
-
-## Testing Environment
-
-**Running FA Instance:** http://192.168.1.102:8080
-- User: `opencode`
-- Password: `opencode`
-
-**Module Deployment:**
-Modules are deployed to `~/Documents/ksf_Infrastructure/fa_modules/` and synced to the running instance.
-# ALWAYS COMMIT (added: always commit per AGENTS.local.md line 36)\n\nPer user instruction from ksf_FA_Calendar/AGENTS.local.md line 36:\n"4. **ALWAYS COMMIT** and **PUSH** branch to GitHub (do not wait for user permission)"
-# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
-# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
-# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
-# ALWAYS COMMIT (added per AGENTS.local.md line 36)\n\nPer instruction: "ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"
+"ALWAYS COMMIT and PUSH branch to GitHub (do not wait for user permission)"

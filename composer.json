@@ -8,5 +8,12 @@
     "require-dev": {
         "phpunit/phpunit": "^10.0"
     },
+    "autoload": {
+        "psr-4": {
+            "ksfraser\\FrontAccounting\\Timesheets\\": "src/Ksfraser/FrontAccounting/Timesheets/",
+            "Ksfraser\\FrontAccounting\\Timesheets\\": "src/Ksfraser/FrontAccounting/Timesheets/",
+            "Ksfraser\\Framework\\": "src/Framework/"
+        }
+    },
     "minimum-stability": "stable"
 }

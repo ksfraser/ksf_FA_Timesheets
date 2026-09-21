@@ -94,6 +94,10 @@ class hooks_ksf_FA_Timesheets extends hooks {
         // This handles @TB_PREF@ replacement automatically
         if (file_exists(dirname(__FILE__) . '/sql/install.sql')) {
             $updates = array('install.sql' => array($this->module_name));
+            // BR-007: (event_id, event_employee_id) guard columns for upgrades.
+            if (file_exists(dirname(__FILE__) . '/sql/upgrade_2.4.3.sql')) {
+                $updates['upgrade_2.4.3.sql'] = array('time_entries', 'event_id');
+            }
             return $this->update_databases($company, $updates, $check_only);
         }
         
@@ -122,6 +126,51 @@ class hooks_ksf_FA_Timesheets extends hooks {
         exec('composer install --no-interaction --prefer-dist 2>&1', $output, $return_code);
         if ($return_code !== 0) {
             error_log('KSF Module: composer install failed: ' . implode("\n", $output));
+        }
+    }
+
+    /**
+     * BR-007 subscriber: a closed calendar event auto-times its member
+     * attendees (FR-TIME-007-002).
+     *
+     * Runs only inside an FA session with DB helpers and only when the close
+     * action supplied acting_user_id via $opts (the anchor Close UI does).
+     * All writes are idempotent by (event_id, employee_id) and wrapped in a
+     * single transaction; any failure is logged, never thrown into core.
+     *
+     * @param object|array $data The EventClosedDto (or array)
+     * @param array        $opts e.g. ['acting_user_id' => 2]
+     */
+    function ksf_event_closed(&$data, $opts = array()) {
+        $autoload = __DIR__ . '/vendor/autoload.php';
+        if (file_exists($autoload)) {
+            require_once $autoload;
+        }
+
+        if (!function_exists('db_query')) {
+            return; // no FA runtime (e.g. tests) — nothing to do
+        }
+        if (!defined('TB_PREF')) {
+            return;
+        }
+
+        $actingUserId = isset($opts['acting_user_id']) && is_scalar($opts['acting_user_id'])
+            ? (int) $opts['acting_user_id'] : 0;
+        if ($actingUserId <= 0) {
+            return; // bulk auto-time is a closer-privileged action
+        }
+        if (!is_object($data) && !is_array($data)) {
+            return;
+        }
+
+        try {
+            $db = new \ksfraser\FrontAccounting\Timesheets\Adapter\FaDbAdapter();
+            $service = new \ksfraser\FrontAccounting\Timesheets\Service\EventCloseTimesheetService(
+                $db, TB_PREF, $actingUserId
+            );
+            $service->createMemberBulk($data);
+        } catch (\Throwable $e) {
+            error_log('[ksf_FA_Timesheets] ksf_event_closed subscriber failed: ' . $e->getMessage());
         }
     }
 }

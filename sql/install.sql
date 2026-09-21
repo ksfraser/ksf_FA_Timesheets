@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS `0_time_entries` (
   `project_stage_id` INT UNSIGNED DEFAULT NULL,
   `project_activity_id` INT UNSIGNED DEFAULT NULL,
   `description` VARCHAR(255),
+  `event_id` INT UNSIGNED DEFAULT NULL,
+  `event_employee_id` INT UNSIGNED DEFAULT NULL,
   `billing_rule` ENUM('cost','cost_plus','fixed_rate','not_billable') NOT NULL DEFAULT 'cost',
   `billing_rate` DECIMAL(15,2) DEFAULT NULL,
   `is_billable` TINYINT(1) NOT NULL DEFAULT 1,
@@ -43,7 +45,9 @@ CREATE TABLE IF NOT EXISTS `0_time_entries` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   KEY `timesheet` (`timesheet_id`),
   KEY `project` (`project_id`),
-  KEY `date` (`entry_date`)
+  KEY `date` (`entry_date`),
+  KEY `event` (`event_id`),
+  UNIQUE KEY `uk_event_employee` (`event_id`, `event_employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `0_approval_step_comments` (

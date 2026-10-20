@@ -42,7 +42,7 @@ function get_time_entries(array $filters = []): ?object
 {
     global $db;
     $sql = "SELECT t.*, e.name as employee_name, p.name as project_name FROM " . TB_PREF . "timesheet_entries t
-        LEFT JOIN " . TB_PREF . "hr_employees e ON t.employee_id = e.id
+        LEFT JOIN " . TB_PREF . "ksf_timesheets_employees e ON t.employee_id = e.id
         LEFT JOIN " . TB_PREF . "projects p ON t.project_id = p.id WHERE 1=1";
     
     if (!empty($filters['employee_id'])) {
@@ -72,7 +72,7 @@ function get_pending_time_entries(): ?object
 {
     global $db;
     $sql = "SELECT t.*, e.name as employee_name FROM " . TB_PREF . "timesheet_entries t
-        LEFT JOIN " . TB_PREF . "hr_employees e ON t.employee_id = e.id
+        LEFT JOIN " . TB_PREF . "ksf_timesheets_employees e ON t.employee_id = e.id
         WHERE t.status = 'Pending' ORDER BY t.date ASC";
     return $db->query($sql);
 }
